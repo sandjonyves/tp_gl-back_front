@@ -1,0 +1,44 @@
+
+# Logs
+logs/
+*.log
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+
+
+# Build output
+dist/
+build/
+
+# Coverage reports
+coverage/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDEs / editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+
+# Docker
+docker-compose.override.yml
+*.env.docker
+
+# GitHub Actions
+.github/workflows/*.log
+
+# React specific
+frontend/node_modules/
+frontend/build/
+
+# Backend specific
+backend/node_modules/
+backend/dist/
