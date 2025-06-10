@@ -1,0 +1,12 @@
+node_modules
+
+.git
+.gitignore
+
+.vscode
+*.swp
+*.swo
+*.bak
+
+tests
+docs

@@ -1,0 +1,72 @@
+[
+  {
+    "registrationNumber": 123,
+    "make": "Toyota",
+    "model": "Corolla",
+    "year": 2020,
+    "rentalPrice": 50
+  },
+  {
+    "registrationNumber": 124,
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2019,
+    "rentalPrice": 45
+  },
+  {
+    "registrationNumber": 125,
+    "make": "Ford",
+    "model": "Focus",
+    "year": 2018,
+    "rentalPrice": 48
+  },
+  {
+    "registrationNumber": 126,
+    "make": "Nissan",
+    "model": "Sentra",
+    "year": 2021,
+    "rentalPrice": 52
+  },
+  {
+    "registrationNumber": 127,
+    "make": "Chevrolet",
+    "model": "Malibu",
+    "year": 2022,
+    "rentalPrice": 55
+  },
+  {
+    "registrationNumber": 128,
+    "make": "Hyundai",
+    "model": "Elantra",
+    "year": 2019,
+    "rentalPrice": 44
+  },
+  {
+    "registrationNumber": 129,
+    "make": "Kia",
+    "model": "Forte",
+    "year": 2020,
+    "rentalPrice": 49
+  },
+  {
+    "registrationNumber": 130,
+    "make": "Volkswagen",
+    "model": "Jetta",
+    "year": 2021,
+    "rentalPrice": 53
+  },
+  {
+    "registrationNumber": 131,
+    "make": "Mazda",
+    "model": "Mazda3",
+    "year": 2020,
+    "rentalPrice": 47
+  },
+  {
+    "registrationNumber": 132,
+    "make": "Subaru",
+    "model": "Impreza",
+    "year": 2022,
+    "rentalPrice": 56
+  }
+]
