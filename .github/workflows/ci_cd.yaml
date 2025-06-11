@@ -39,6 +39,12 @@ jobs:
       - name: Install backend dependencies
         working-directory: ./backend
         run: npm install
+        
+      - name: Créer fichier .env temporaire
+        working-directory: ./backend
+        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Test backend
         working-directory: ./backend
@@ -53,6 +59,4 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/backend-tp-gl:latest
-        
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
