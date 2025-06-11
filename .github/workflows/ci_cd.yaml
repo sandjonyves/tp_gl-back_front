@@ -64,18 +64,7 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
-  Deploy-Preview:
-    name: Deploy frontend to vercel
-    needs: build-frontend
-    runs-on: ubuntu-latest
-    steps:
-      - name: Pull Vercel Environment Information
-        working-directory: ./frontend
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
            
 
   deploy:
@@ -86,3 +75,16 @@ jobs:
     steps:
       - name: Trigger Render Deploy Hook
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+
+  Deploy-Preview:
+    name: Deploy frontend to vercel
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull Vercel Environment Information
+        working-directory: ./frontend
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
