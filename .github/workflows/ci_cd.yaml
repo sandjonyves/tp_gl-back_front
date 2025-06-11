@@ -68,7 +68,7 @@ jobs:
 
   deploy-frontend:
     name: Deploy frontend to Vercel
-    needs: build-test-deploy
+    needs: deploy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -78,10 +78,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          
-      - name: Install frontend dependencies
-        working-directory: ./frontend
-        run: npm install
           
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
