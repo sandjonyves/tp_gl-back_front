@@ -21,25 +21,12 @@ jobs:
         with:
           node-version: '20'
 
-     
-      # FRONTEND (React JS)
+ # BACKEND (Node + Docker)
       
-      - name: Install frontend dependencies
-        working-directory: ./frontend
-        run: npm install
-
-
-      - name: Build frontend
-        working-directory: ./frontend
-        run: npm run build
-
-     
-      # BACKEND (Node + Docker)
-      #
       - name: Install backend dependencies
         working-directory: ./backend
         run: npm install
-        
+
       - name: Créer fichier .env temporaire
         working-directory: ./backend
         run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
@@ -60,3 +47,17 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/backend-tp-gl:latest
 
+     
+# FRONTEND (React JS)
+      
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm install
+
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build
+
+     
+     
