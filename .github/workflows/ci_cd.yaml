@@ -53,3 +53,6 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/backend-tp-gl:latest
+        
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
