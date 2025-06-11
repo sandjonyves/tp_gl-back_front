@@ -56,7 +56,7 @@ describe('refreshExpiredToken Function', () => {
     expect(mockUser.generateTokens).toHaveBeenCalledTimes(1);
     expect(res.cookie).toHaveBeenCalledWith('accessToken', 'mockAccessToken', {
       httpOnly: true,
-      secure: true,
+      secure: false,
       sameSite: 'strict',
       maxAge: 15 * 60 * 1000
     });
