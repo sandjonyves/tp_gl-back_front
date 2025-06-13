@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Plus, Edit2, Trash2, Filter, Grid, List, Star, MapPin, X, ArrowUpDown } from 'lucide-react';
-import { Button, Input, Table, Card, Badge } from '@/components/ui';
+import { Search, Plus, Edit2, Trash2, Grid, List, ArrowUpDown, X } from 'lucide-react';
+import { Button, Input, Table, Card } from '@/components/ui';
 import { CarModal } from './CarModal';
 import { vehicleService, Vehicle } from '@/services/vehicle.service';
 
@@ -16,8 +16,8 @@ interface PriceFilter {
 
 export const CarsManagement: React.FC<CarsManagementProps> = ({
   showAddModal,
-  setShowAddModal,}) => {
-
+  setShowAddModal,
+}) => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [editingCar, setEditingCar] = useState<Vehicle | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,20 +27,24 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
   const [showFilters, setShowFilters] = useState(false);
   const [priceFilter, setPriceFilter] = useState<PriceFilter>({ min: 0, max: 1000 });
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(null);
-
+  const [filteredTestCars, setFilteredCars] = useState<Vehicle[]>([]);
   useEffect(() => {
     loadVehicles();
+   
   }, []);
 
   const loadVehicles = async () => {
     try {
       setLoading(true);
       const vehicles = await vehicleService.getAllVehicles();
+      setFilteredCars(vehicles);
+       // Debug log
       setCars(vehicles);
+      
       setError(null);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error loading vehicles:', err);
-      setError('Failed to load vehicles. Please try again later.');
+      setError(err.message.includes('forbidden') ? 'Accès refusé : permissions insuffisantes' : 'Échec du chargement des véhicules. Veuillez réessayer.');
     } finally {
       setLoading(false);
     }
@@ -55,9 +59,9 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
     try {
       await vehicleService.deleteVehicle(registrationNumber);
       setCars(cars.filter(car => car.registrationNumber !== registrationNumber));
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error deleting vehicle:', err);
-      setError('Failed to delete vehicle. Please try again.');
+      setError(err.message.includes('forbidden') ? 'Accès refusé : impossible de supprimer' : 'Échec de la suppression du véhicule. Veuillez réessayer.');
     }
   };
 
@@ -66,9 +70,9 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
       const newCar = await vehicleService.createVehicle(carData);
       setCars([...cars, newCar]);
       setShowAddModal(false);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error adding vehicle:', err);
-      setError('Failed to add vehicle. Please try again.');
+      setError(err.message.includes('forbidden') ? 'Accès refusé : impossible d\'ajouter' : 'Échec de l\'ajout du véhicule. Veuillez réessayer.');
     }
   };
 
@@ -79,29 +83,29 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
         car.registrationNumber === registrationNumber ? updatedCar : car
       ));
       setShowAddModal(false);
-      // setEditingCar(null);
-    } catch (err) {
+      setEditingCar(null);
+    } catch (err: any) {
       console.error('Error updating vehicle:', err);
-      setError('Failed to update vehicle. Please try again.');
+      setError(err.message.includes('forbidden') ? 'Accès refusé : impossible de modifier' : 'Échec de la modification du véhicule. Veuillez réessayer.');
     }
   };
 
   const filteredCars = cars.filter(car => {
     const matchesSearch = 
-      String(car.registrationNumber).toLowerCase().includes(searchTerm.toLowerCase()) ||
-      car.make.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      car.model.toLowerCase().includes(searchTerm.toLowerCase());
+      String(car.registrationNumber || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (car.make || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (car.model || '').toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesPrice = 
-      car.rentalPrice >= priceFilter.min && 
-      car.rentalPrice <= priceFilter.max;
+      (car.rentalPrice || 0) >= priceFilter.min && 
+      (car.rentalPrice || 0) <= priceFilter.max;
 
     return matchesSearch && matchesPrice;
   }).sort((a, b) => {
     if (sortOrder === 'asc') {
-      return a.rentalPrice - b.rentalPrice;
+      return (a.rentalPrice || 0) - (b.rentalPrice || 0);
     } else if (sortOrder === 'desc') {
-      return b.rentalPrice - a.rentalPrice;
+      return (b.rentalPrice || 0) - (a.rentalPrice || 0);
     }
     return 0;
   });
@@ -127,7 +131,7 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
 
   const columns = [
     {
-      header: 'Vehicle',
+      header: 'Véhicule',
       accessor: (car: Vehicle) => (
         <div className="flex items-center space-x-3">
           <div className="text-2xl">🚗</div>
@@ -139,13 +143,13 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
       )
     },
     { 
-      header: 'Year', 
+      header: 'Année', 
       accessor: (car: Vehicle) => car.year 
     },
     {
-      header: 'Price',
+      header: 'Prix',
       accessor: (car: Vehicle) => (
-        <span className="font-bold text-pink-600">${car.rentalPrice}/day</span>
+        <span className="font-bold text-pink-600">${car.rentalPrice}/jour</span>
       )
     },
     {
@@ -177,21 +181,6 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
     }
   ];
 
-  if (loading) {
-    return <div className="flex justify-center items-center h-64">Loading vehicles...</div>;
-  }
-
-  if (error) {
-    return (
-      <div className="p-4 bg-red-50 text-red-600 rounded-lg mb-4 flex justify-between items-center">
-        <span>{error}</span>
-        <Button variant="ghost" size="sm" onClick={() => setError(null)}>
-          <X className="w-4 h-4" />
-        </Button>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       {/* Header Actions */}
@@ -199,7 +188,7 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
         <div className="flex items-center space-x-4">
           <Input
             icon={Search}
-            placeholder="Search vehicles..."
+            placeholder="Rechercher un véhicule..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-64"
@@ -211,9 +200,8 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
               onClick={() => setShowFilters(!showFilters)}
               className={showFilters ? 'bg-pink-50 border-pink-200 text-pink-600' : ''}
             >
-              Sort by Price
+              Trier par prix
             </Button>
-
             {showFilters && (
               <div className="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 z-50 border border-gray-100">
                 <button
@@ -223,7 +211,7 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
                   }`}
                 >
                   <ArrowUpDown className="w-4 h-4" />
-                  <span>Price: Low to High</span>
+                  <span>Prix : croissant</span>
                 </button>
                 <button
                   onClick={() => handleSort('desc')}
@@ -232,7 +220,7 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
                   }`}
                 >
                   <ArrowUpDown className="w-4 h-4" />
-                  <span>Price: High to Low</span>
+                  <span>Prix : décroissant</span>
                 </button>
                 {sortOrder && (
                   <button
@@ -243,14 +231,13 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
                     className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center space-x-2 mt-1 border-t border-gray-100"
                   >
                     <X className="w-4 h-4" />
-                    <span>Clear Sort</span>
+                    <span>Supprimer le tri</span>
                   </button>
                 )}
               </div>
             )}
           </div>
         </div>
-        
         <div className="flex items-center space-x-4">
           <div className="flex bg-gray-100 rounded-xl p-1">
             <Button
@@ -268,7 +255,6 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
               className={viewMode === 'list' ? 'bg-white shadow-sm' : ''}
             />
           </div>
-          
           <Button
             icon={Plus}
             onClick={() => {
@@ -276,7 +262,7 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
               setShowAddModal(true);
             }}
           >
-            Add Vehicle
+            Ajouter un véhicule
           </Button>
         </div>
       </div>
@@ -284,52 +270,44 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
       {/* Debug info */}
       {process.env.NODE_ENV === 'development' && (
         <div className="text-sm text-gray-500">
-          Total vehicles: {cars.length}, Filtered: {cars.length}
+          Total véhicules : {cars.length}, Filtrés : {filteredCars.length}
           {sortOrder && (
             <span className="ml-2 text-pink-600">
-              (Sorted by price {sortOrder === 'asc' ? 'ascending' : 'descending'})
+              (Trié par prix {sortOrder === 'asc' ? 'croissant' : 'décroissant'})
             </span>
           )}
         </div>
       )}
 
-      {cars.length === 0 && (
+      {loading ? (
+        <div className="flex justify-center items-center h-64 text-blue-600">Chargement des véhicules...</div>
+      ) : filteredCars.length === 0 ? (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">🔍</div>
-          <h3 className="text-2xl font-bold text-gray-800 mb-2">No cars found</h3>
-          <p className="text-gray-600 mb-4">Try adjusting your search criteria or filters</p>
-          <Button
-            onClick={clearFilters}
-            // variant="gradient"
-            className="px-6 py-3"
-          >
-            Clear All Filters
+          <h3 className="text-2xl font-bold text-gray-800 mb-2">Aucun véhicule trouvé</h3>
+          <p className="text-gray-600 mb-4">Essayez d'ajuster vos critères de recherche ou vos filtres</p>
+          <Button onClick={clearFilters} className="px-6 py-3">
+            Supprimer tous les filtres
           </Button>
         </div>
-      )}
-
-      {/* Vehicles grid/List */}
-      {cars.length > 0 && (
+      ) : (
         viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {cars.map(car => (
+            {filteredCars.map(car => (
               <Card key={`car-${car.registrationNumber}`} hover className="p-6">
                 <div className="text-center mb-4">
                   <div className="text-4xl mb-2">🚗</div>
                   <h3 className="text-xl font-bold text-gray-900">{car.make} {car.model}</h3>
                   <p className="text-gray-600">{car.registrationNumber}</p>
                 </div>
-                
                 <div className="space-y-3 text-sm">
                   <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-pink-600">${car.rentalPrice}</span>
-                    <span className="text-gray-500">/day</span>
+                    <span className="text-gray-500">/jour</span>
                   </div>
-                  
                   <div className="flex items-center space-x-2 text-gray-600">
-                    <span>Year: {car.year}</span>
+                    <span>Année : {car.year}</span>
                   </div>
-                  
                   <div className="flex justify-end space-x-2 pt-2">
                     <Button
                       variant="ghost"
@@ -359,7 +337,7 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
         ) : (
           <Table
             columns={columns}
-            data={cars}
+            data={filteredCars}
             onRowClick={(car) => handleEditCar(car)}
           />
         )

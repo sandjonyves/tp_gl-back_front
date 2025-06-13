@@ -14,6 +14,11 @@ export interface AuthResponse {
   id: string;
   name: string;
   role: string;
+  dataValues?: {
+    id: string;
+    name: string;
+    role: string;
+  };
   user: {
     id: string;
     name: string;
@@ -140,6 +145,18 @@ class AuthService {
     const isAuth = !!accessToken;
     console.log('Authentication status:', isAuth); // Debug log
     return isAuth;
+  }
+
+ async getAllUsers(): Promise<AuthResponse[]> {
+    try {
+      console.log('Fetching all users'); // Debug log
+      const response = await api.get<[]>('users/all');
+      console.log('Users fetched successfully:', response.data); // Debug log
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      throw error;
+    }
   }
 }
 

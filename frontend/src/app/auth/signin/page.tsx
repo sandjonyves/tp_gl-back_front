@@ -22,8 +22,8 @@ export default function SignIn() {
     
     const response = await authService.login({  name: name, password: password });
     // setLoading(false)
-    console.log(response)
-    router.push(response.role === 'admin' ? '/dashboard' : '/vehicles')
+    console.log('respobsedsdsa',response)
+    router.push(response.dataValues?.role === 'admin' ? '/dashboard' : '/vehicles')
     // if(!!response.id){
     //   router.push(response.role === 'admin' ? '/dashboard' : '/vehicles')
     // }

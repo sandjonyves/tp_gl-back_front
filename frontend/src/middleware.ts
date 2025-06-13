@@ -14,10 +14,10 @@ export async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get('accessToken')?.value;
 
   // Si la route est protégée et qu'il n'y a pas de token
-  if (!accessToken && protectedRoutes.some(route => pathname.startsWith(route))) {
-    console.log('No access token, redirecting to signin');
-    return NextResponse.redirect(new URL('/auth/signin', request.url));
-  }
+  // if (!accessToken && protectedRoutes.some(route => pathname.startsWith(route))) {
+  //   console.log('No access token, redirecting to signin');
+  //   return NextResponse.redirect(new URL('/auth/signin', request.url));
+  // }
 
   // Si un token est présent, valider optionnellement avec le backend
   let isAuthenticated = !!accessToken;

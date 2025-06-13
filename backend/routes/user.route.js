@@ -7,7 +7,8 @@ const {
   logoutUser,
   refreshExpiretedToken,  
   updateUserName,      
-  updateUserRole      
+  updateUserRole,
+  getAllUser   
 } = require("../controller/user/index.controller");
 
 
@@ -15,9 +16,10 @@ router.post("/register", createUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 router.post("/refresh", refreshExpiretedToken); 
+router.get("/all", authenticate, authorize('admin'), getAllUser);
 
 
 
 router.put("/update/:id", authenticate, updateUserName);  
-router.put("/update/role/:id", authenticate, authorize(['admin']), updateUserRole);  
+router.put("/update/role/:id", authenticate, authorize('admin'), updateUserRole);  
 module.exports = router;

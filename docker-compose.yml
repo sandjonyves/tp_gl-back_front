@@ -11,12 +11,14 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5433:5432"
     networks:
       - backend
 
-  app:
-    build: .
+  backend:
+    build:
+      context: ./backend
+    container_name: tp_backend
     depends_on:
       - db
     environment:
@@ -31,8 +33,18 @@ services:
       - backend
     command: sh -c "node ./scripts/seeds.js && npm start"
 
+  frontend:
+    build:
+      context: ./frontend
+    container_name: tp_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
 volumes:
   pgdata:
 
 networks:
   backend:
+
+

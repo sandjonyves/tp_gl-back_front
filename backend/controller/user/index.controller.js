@@ -5,6 +5,7 @@ const logoutUser = require("./logoutUser");
 const refreshExpiretedToken  = require("./refreshExpiretedToken");
 const updateUserName = require("./updateUser").updateUserName;
 const updateUserRole = require("./updateUser").updateUserRole;
+const getAllUser = require("./getAllUser");
 
 module.exports = {
     createUser,
@@ -12,5 +13,6 @@ module.exports = {
     logoutUser,
     refreshExpiretedToken,  
     updateUserName,
-    updateUserRole
+    updateUserRole,
+    getAllUser
 };
