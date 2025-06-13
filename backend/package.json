@@ -5,6 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
+    "test:unit": "jest tests/middleware/ && jest tests/user/ && jest tests/vehicle/",
+    "test:integration": "jest tests/integration/",
     "test": "jest"
   },
   "dependencies": {
