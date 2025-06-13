@@ -1,0 +1,43 @@
+# Page snapshot
+
+```yaml
+- alert
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 1 Issue
+- button "Collapse issues badge":
+  - img
+- text: ✨ 🚗 💎
+- banner:
+  - heading "Propelize Admin" [level=1]
+  - button "A"
+- text: ✨ Welcome back, user!
+- heading "Find Your Perfect Ride" [level=1]
+- paragraph: Discover amazing cars for every journey. From city cruisers to adventure vehicles, we've got the perfect ride waiting for you.
+- textbox "Search by car name, type, or location..."
+- combobox:
+  - option "Any Year" [selected]
+  - option "2025"
+  - option "2024"
+  - option "2023"
+  - option "2022"
+  - option "2021"
+  - option "2020"
+  - option "2019"
+  - option "2018"
+  - option "2017"
+  - option "2016"
+- button "Filters"
+- heading "Available Cars (0)" [level=2]
+- paragraph: Find the perfect car for your next adventure
+- combobox:
+  - option "Registration Number" [selected]
+  - 'option "Price: Low to High"'
+  - 'option "Price: High to Low"'
+  - option "Newest First"
+- button "Grid"
+- button "List"
+- text: 🔍
+- heading "No cars found" [level=3]
+- paragraph: Try adjusting your search criteria or filters
+```

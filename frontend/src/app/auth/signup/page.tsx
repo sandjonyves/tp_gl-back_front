@@ -6,7 +6,9 @@ import { authService } from '@/services/auth.service';
 import Link from 'next/link';
 
 export default function SignUp() {
+
   const router = useRouter();
+  const [isSignup,setIsSignup] = useState<boolean>(false)
 
   const [formData, setFormData] = useState({
     name: '',
@@ -52,6 +54,7 @@ export default function SignUp() {
 
       // Stocker les informations de l'utilisateur
       if(!!response){
+        
         if (formData.userType === 'admin') {
           router.replace('/dashboard');
         } else {
