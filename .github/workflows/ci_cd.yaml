@@ -53,6 +53,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: npm install
       - name: intergration test
         working-directory: ./backend
         run: npm run test:integration
