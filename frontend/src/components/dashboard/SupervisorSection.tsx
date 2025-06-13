@@ -13,7 +13,7 @@ export const SupervisorSection = () => {
         </h3>
       </div>
       <div className="p-4 bg-gray-50 rounded-xl hover:shadow-md transition-shadow">
-        <p className="font-medium text-gray-900">Dr. Alain Mvondo</p>
+        <p className="font-medium text-gray-900">Mr Regis Atemengue</p>
         <p className="text-sm text-gray-500">Encadrant du projet</p>
       </div>
     </div>

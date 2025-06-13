@@ -51,7 +51,7 @@ export const DashboardStats = () => {
       // En cas d'erreur, afficher des valeurs par défaut
       setStats(prevStats => prevStats.map(stat => ({
         ...stat,
-        value: 'Error',
+        value: 'No Cars',
         loading: false
       })));
     }
