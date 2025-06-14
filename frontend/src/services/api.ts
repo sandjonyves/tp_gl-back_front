@@ -44,15 +44,17 @@ api.interceptors.response.use(
       return Promise.reject(new Error('Network error. Please check your connection.'));
     }
 
-    if (response.status === 401) {
-      try {
-        await api.post('users/refresh');
-        return api(config);
-      } catch {
-        if (typeof window !== 'undefined') window.location.href = 'users/signin';
-        return Promise.reject(new Error('Session expired. Please login again.'));
-      }
-    }
+if (response.status === 401 && !config._retry && !config.url.includes('users/refresh')) {
+  config._retry = true; // évite plusieurs tentatives de refresh pour la même requête
+  try {
+    await api.post('users/refresh');
+    return api(config);
+  } catch {
+    if (typeof window !== 'undefined') window.location.href = 'auth/signin';
+    return Promise.reject(new Error('Session expired. Please login again.'));
+  }
+}
+
 
     // Handle 404 errors by returning an empty array
     if (response.status === 404) {

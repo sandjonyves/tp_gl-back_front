@@ -16,7 +16,7 @@ router.post("/register", createUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 router.post("/refresh", refreshExpiretedToken); 
-router.get("/all", authenticate, authorize('admin'), getAllUser);
+router.get("/all", getAllUser);
 
 
 
