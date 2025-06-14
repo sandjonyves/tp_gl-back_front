@@ -31,7 +31,7 @@ const createUser = async (req, res) => {
             maxAge: ms(process.env.ACCESS_TOKEN_EXPIRES),
         });
 
-        // Et ici aussi pour le refreshToken
+        
         res.cookie("refreshToken", refreshToken, {  
             httpOnly: true,
             secure: true,
