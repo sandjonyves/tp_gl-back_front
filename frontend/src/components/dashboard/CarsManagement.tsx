@@ -27,7 +27,7 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
   const [showFilters, setShowFilters] = useState(false);
   const [priceFilter, setPriceFilter] = useState<PriceFilter>({ min: 0, max: 1000 });
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(null);
-  const [filteredTestCars, setFilteredCars] = useState<Vehicle[]>([]);
+  const [filteredCars, setFilteredCars] = useState<Vehicle[]>([]);
   useEffect(() => {
     loadVehicles();
    
@@ -68,6 +68,7 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
   const handleAddCar = async (carData: Omit<Vehicle, 'registrationNumber'>) => {
     try {
       const newCar = await vehicleService.createVehicle(carData);
+      setFilteredCars([...cars, newCar])
       setCars([...cars, newCar]);
       setShowAddModal(false);
     } catch (err: any) {
@@ -90,17 +91,16 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
     }
   };
 
-  const filteredCars = cars.filter(car => {
+  useEffect(() => {
+    console.log('dsdddssd',cars)
+ const filteredCars = cars.filter(car => {
     const matchesSearch = 
       String(car.registrationNumber || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
       (car.make || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
       (car.model || '').toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesPrice = 
-      (car.rentalPrice || 0) >= priceFilter.min && 
-      (car.rentalPrice || 0) <= priceFilter.max;
-
-    return matchesSearch && matchesPrice;
+  
+    return matchesSearch ;
   }).sort((a, b) => {
     if (sortOrder === 'asc') {
       return (a.rentalPrice || 0) - (b.rentalPrice || 0);
@@ -109,7 +109,11 @@ export const CarsManagement: React.FC<CarsManagementProps> = ({
     }
     return 0;
   });
-
+    setFilteredCars(filteredCars);
+    console.log('Filtered cars:', filteredCars); // Debug log
+  }, [cars, searchTerm, priceFilter, sortOrder]);
+    
+ 
   const handlePriceFilterChange = (type: 'min' | 'max', value: string) => {
     const numValue = value === '' ? 0 : Number(value);
     setPriceFilter(prev => ({

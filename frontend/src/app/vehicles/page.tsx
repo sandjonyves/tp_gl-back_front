@@ -60,10 +60,10 @@ const [filteredCars, setFilteredCars] = useState<Vehicle[]>([]);
       
       const matchesYear = !selectedFilters.year || 
         car.year === parseInt(selectedFilters.year);
-      const matchesPrice = car.rentalPrice >= selectedFilters.priceRange[0] && 
-        car.rentalPrice <= selectedFilters.priceRange[1];
+      // const matchesPrice = car.rentalPrice >= selectedFilters.priceRange[0] && 
+      //   car.rentalPrice <= selectedFilters.priceRange[1];
 
-      return matchesSearch && matchesYear && matchesPrice;
+      return matchesSearch && matchesYear;
     });
 
     // Sort cars
@@ -165,7 +165,7 @@ const [filteredCars, setFilteredCars] = useState<Vehicle[]>([]);
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search by car name, type, or location..."
-                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
+                className="w-full pl-12 pr-4 py-3 border text-gray-800 border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors"
               />
             </div>
 
@@ -176,7 +176,7 @@ const [filteredCars, setFilteredCars] = useState<Vehicle[]>([]);
                 <select
                   value={selectedFilters.year}
                   onChange={(e) => setSelectedFilters(prev => ({ ...prev, year: e.target.value }))}
-                  className="pl-10 pr-8 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors appearance-none bg-white"
+                  className="pl-10 pr-8 py-3 border text-black border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors appearance-none bg-white"
                 >
                   <option value="">Any Year</option>
                   {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map(year => (
@@ -185,34 +185,25 @@ const [filteredCars, setFilteredCars] = useState<Vehicle[]>([]);
                 </select>
               </div>
 
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className={`flex items-center space-x-2 px-4 py-3 rounded-xl transition-all ${
-                  showFilters 
-                    ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white' 
-                    : 'border border-gray-300 text-gray-600 hover:border-pink-300'
-                }`}
-              >
-                <Filter className="w-4 h-4" />
-                <span>Filters</span>
-              </button>
+           
+
             </div>
           </div>
 
           {/* Advanced Filters */}
           {showFilters && (
-            <div className="mt-6 pt-6 border-t border-gray-200">
+            <div className="mt-6 pt-6 border-t border-gray-200 text-black">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
                   <select
                     value={selectedFilters.year}
                     onChange={(e) => setSelectedFilters(prev => ({ ...prev, year: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                    className="w-full px-3 py-2 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
                   >
                     <option value="">Any Year</option>
                     {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map(year => (
-                      <option key={year} value={year}>{year}</option>
+                      <option className='text-black bg-red-500' key={year} value={year}>{year}</option>
                     ))}
                   </select>
                 </div>
@@ -252,7 +243,7 @@ const [filteredCars, setFilteredCars] = useState<Vehicle[]>([]);
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+              className="px-3 py-2 border border-gray-300 text-black rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
             >
               <option value="registration">Registration Number</option>
               <option value="price-low">Price: Low to High</option>
