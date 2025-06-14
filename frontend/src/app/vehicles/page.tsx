@@ -343,12 +343,7 @@ const [filteredCars, setFilteredCars] = useState<Vehicle[]>([]);
             <div className="text-6xl mb-4">🔍</div>
             <h3 className="text-2xl font-bold text-gray-800 mb-2">No cars found</h3>
             <p className="text-gray-600 mb-4">Try adjusting your search criteria or filters</p>
-            {/* <button
-              onClick={clearFilters}
-              className="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl hover:from-pink-600 hover:to-purple-700 transition-all"
-            >
-              Clear All Filters
-            </button> */}
+           
           </div>
         )}
       </div>
