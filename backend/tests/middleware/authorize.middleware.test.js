@@ -1,6 +1,6 @@
 const authorize = require('../../middleware/authorize.middleware');
 
-describe('🧪 CT-UM-04 – Accès refusé si rôle non autorisé (authorize)', () => {
+describe('CT-UM-04 – Accès refusé si rôle non autorisé (authorize)', () => {
   it('renvoie 403 si le rôle utilisateur n’est pas autorisé', () => {
     const req = {
       headers: {
@@ -13,7 +13,7 @@ describe('🧪 CT-UM-04 – Accès refusé si rôle non autorisé (authorize)', 
     };
     const next = jest.fn();
 
-    const middleware = authorize(['admin']); // seul "admin" est autorisé
+    const middleware = authorize('admin'); // seul "admin" est autorisé
     middleware(req, res, next);
 
     expect(res.status).toHaveBeenCalledWith(403);
@@ -21,7 +21,7 @@ describe('🧪 CT-UM-04 – Accès refusé si rôle non autorisé (authorize)', 
     expect(next).not.toHaveBeenCalled();
   });
 
-  describe('🧪 CT-UM-05 – Accès autorisé si rôle permis (authorize)', () => {
+  describe(' CT-UM-05 – Accès autorisé si rôle permis (authorize)', () => {
     it('appelle next() si le rôle utilisateur est autorisé', () => {
       const req = {
         headers: {
