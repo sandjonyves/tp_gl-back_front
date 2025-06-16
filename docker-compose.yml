@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   db:
@@ -27,6 +26,8 @@ services:
       DB_NAME: dbGroup10
       DB_USER: postgres
       DB_PASSWORD: postgres
+      DATABASE_URL: postgresql://tp-352_owner:npg_lAV4T8dYGNiI@ep-odd-mouse-a8oi3o72-pooler.eastus2.azure.neon.tech/tp-352?sslmode=require
+
     ports:
       - "3001:3001"
     networks:

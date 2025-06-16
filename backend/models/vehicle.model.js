@@ -1,6 +1,6 @@
 // models/vehicle.model.js
 const { DataTypes } = require("sequelize");
-const sequelize = require("../config/db");
+const {sequelize} = require("../config/db");
 
 const Vehicle = sequelize.define("Vehicle", {
   registrationNumber: {

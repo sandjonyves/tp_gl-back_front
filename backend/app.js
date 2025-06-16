@@ -11,7 +11,7 @@ const bodyParser = require("body-parser");
 
 var vehicleRoute = require("./routes/vehicule.route");
 var userRoute = require("./routes/user.route");
-var sequelize = require("./config/db");
+var {sequelize} = require("./config/db");
 var app = express();
 
 // Configuration CORS
